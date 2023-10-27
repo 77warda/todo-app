@@ -1,0 +1,33 @@
+<div class="list">
+  <div class="todo-con">
+    <div *ngFor="let todo of getFilteredTodos()" class="todo-li">
+      <org-loader class="mb-5" *ngIf="todo.isLoading"></org-loader>
+      <ng-container *ngIf="!todo.isLoading">
+        <span
+          (click)="markCompleted(todo)"
+          [class.active-check]="todo.complete"
+          class="check"
+        >
+          <img src="../../assets/img/icon-check.svg" alt=""
+        /></span>
+        <p [class.completed]="todo.complete">{{ todo.name }}</p>
+        <button (click)="deleteTodo(todo.id)" class="close">
+          <img src="../../assets/img/icon-cross.svg" alt="" />
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="info">
+  <p class="left">{{ todos.length }} items left</p>
+  <div class="choice">
+    <p [class.active]="filter === 'all'" (click)="setFilter('all')">All</p>
+    <p [class.active]="filter === 'active'" (click)="setFilter('active')">
+      Active
+    </p>
+    <p [class.active]="filter === 'completed'" (click)="setFilter('completed')">
+      Completed
+    </p>
+  </div>
+  <p class="clear" (click)="clearCompleted()">Clear Completed</p>
+</div>
