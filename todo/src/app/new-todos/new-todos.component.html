@@ -1,5 +1,5 @@
 <div class="todo">
-  <form [formGroup]="todoForm" (ngSubmit)="addTodo()">
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
     <input
       formControlName="name"
       type="text"

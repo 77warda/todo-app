@@ -1,24 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo } from './entities/todo.entity';
+import { Injectable } from "@nestjs/common";
+import { CreateTodoDto } from "./dto/create-todo.dto";
+import { UpdateTodoDto } from "./dto/update-todo.dto";
+import { Todo } from "./entities/todo.entity";
 
 @Injectable()
 export class TodosService {
   private todos: Todo[] = [
     {
       id: 1,
-      name: 'first',
+      name: "first",
       complete: false,
     },
     {
       id: 2,
-      name: 'Second',
+      name: "Second",
       complete: false,
     },
     {
       id: 3,
-      name: 'third',
+      name: "third",
       complete: false,
     },
   ];
@@ -42,15 +42,28 @@ export class TodosService {
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
-    const todoToUpdate = this.todos.find((todo) => todo.id === id);
-    todoToUpdate.complete = !todoToUpdate.complete;
-    return todoToUpdate;
+    const index = this.todos.findIndex((todo) => todo.id === id);
+    if (index === -1) {
+      console.log(`Todo with ID ${id} not found`);
+    }
+
+    // Replace the entire todo object with the updated data
+    this.todos[index] = {
+      ...this.todos[index],
+      ...updateTodoDto, // Update with the new data from updateTodoDto
+    };
+
+    return this.todos[index];
   }
 
   remove(id: number) {
     const index = this.todos.findIndex((todo) => todo.id === id);
     if (index !== -1) {
       this.todos.splice(index, 1);
+      // Reset IDs for remaining todos starting from 1
+      this.todos.forEach((todo, index) => {
+        todo.id = index + 1;
+      });
     }
   }
 }

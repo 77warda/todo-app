@@ -6,12 +6,16 @@
       <img src="./img/icon-sun.svg" alt />
     </div>
     <div class="todo">
-      <org-new-todos (addTodoItem)="addTodo($event)"></org-new-todos>
+      <org-new-todos
+        [selectedTodo]="selectedTodo"
+        (todoUpdated)="handleTodoUpdated($event)"
+      ></org-new-todos>
       <org-todo-list
         [todos]="allTodos"
         (deleteTodoItem)="deleteTodo($event)"
         (markAsComplete)="markCompleted($event)"
         (clearcompletedItems)="clearCompleted()"
+        [selectedTodo]="selectedTodo"
       ></org-todo-list>
     </div>
   </div>

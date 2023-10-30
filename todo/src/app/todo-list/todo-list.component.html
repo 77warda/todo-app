@@ -11,6 +11,9 @@
           <img src="../../assets/img/icon-check.svg" alt=""
         /></span>
         <p [class.completed]="todo.complete">{{ todo.name }}</p>
+        <button (click)="editTodo(todo)" class="edit">
+          <img src="../../assets/img/edit.png" alt="" />
+        </button>
         <button (click)="deleteTodo(todo.id)" class="close">
           <img src="../../assets/img/icon-cross.svg" alt="" />
         </button>

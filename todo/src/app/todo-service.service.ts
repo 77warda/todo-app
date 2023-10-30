@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../environments/environment.development';
-import { Todo } from './new-todos/todo.interface';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { environment } from "../environments/environment.development";
+import { Todo } from "./new-todos/todo.interface";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TodoServiceService {
   private apiUrl = environment.apiUrl;
@@ -27,5 +27,8 @@ export class TodoServiceService {
     return this.http.patch<Todo>(`${this.apiUrl}/${todoId}`, {
       complete: status,
     });
+  }
+  updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
+    return this.http.patch<Todo>(`${this.apiUrl}/${id}`, updatedTodo);
   }
 }
