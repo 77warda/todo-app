@@ -14,9 +14,14 @@
         <button (click)="editTodo(todo)" class="edit">
           <img src="../../assets/img/edit.png" alt="" />
         </button>
-        <button (click)="deleteTodo(todo.id)" class="close">
+        <button (click)="showModal(todo)" class="close">
           <img src="../../assets/img/icon-cross.svg" alt="" />
         </button>
+        <span
+          (click)="pinnedTodo(todo)"
+          [class.active-pin]="todo.pin"
+          class="pin"
+        ></span>
       </ng-container>
     </div>
   </div>
@@ -33,4 +38,13 @@
     </p>
   </div>
   <p class="clear" (click)="clearCompleted()">Clear Completed</p>
+</div>
+<div class="modal-overlay" *ngIf="isModalVisible">
+  <div class="modal-body">
+    <p>Are you sure you want to delete?</p>
+    <div class="modal-btns">
+      <button (click)="hideModal()">Cancel</button>
+      <button (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
 </div>

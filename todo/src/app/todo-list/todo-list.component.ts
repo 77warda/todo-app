@@ -15,29 +15,41 @@ export class TodoListComponent {
   @Output() deleteTodoItem = new EventEmitter<number>();
   @Output() editTodoItem = new EventEmitter<number>();
   @Output() markAsComplete = new EventEmitter<Todo>();
+  @Output() pinTodo = new EventEmitter<Todo>();
   @Output() clearcompletedItems = new EventEmitter<any>();
 
   isLoading = false;
   filter: "all" | "active" | "completed" = "all";
-  constructor(private todoDataService: DataShareService) {}
+  isModalVisible: boolean = false;
+  todoToDelete: Todo | null = null;
+
+  constructor(
+    private todoDataService: DataShareService,
+    private todoService: TodoServiceService
+  ) {}
+  ngOnInit(): void {
+    // this.todoService.getTodos().subscribe((todos: Todo[]) => {
+    //   this.todos = todos;
+    // });
+  }
+  showModal(todo: Todo) {
+    this.todoToDelete = todo;
+    this.isModalVisible = true;
+  }
+
+  hideModal() {
+    this.isModalVisible = false;
+  }
+
+  confirmDelete() {
+    if (this.todoToDelete) {
+      this.deleteTodoItem.emit(this.todoToDelete.id);
+      this.hideModal();
+    }
+  }
 
   editTodo(todo: any) {
     this.todoDataService.setTodo(todo);
-  }
-
-  ngOnInit(): void {
-    this.fetchTodos();
-  }
-
-  fetchTodos() {
-    // this.todoService.getTodos().subscribe((response) => {
-    //   this.todos = response.map((todo) => ({ ...todo, isLoading: true }));
-    //   this.isLoading = true;
-    //   setTimeout(() => {
-    //     this.todos.forEach((todo) => (todo.isLoading = false));
-    //     this.isLoading = false; // Set isLoading to false once data is loaded
-    //   }, 2000);
-    // });
   }
 
   deleteTodo(todoId: number | undefined) {
@@ -49,17 +61,41 @@ export class TodoListComponent {
     this.markAsComplete.emit(todo);
   }
 
+  pinnedTodo(todo: Todo) {
+    this.pinTodo.emit(todo);
+  }
+
   clearCompleted() {
     this.clearcompletedItems.emit();
   }
 
+  // getFilteredTodos(): any[] {
+  //   if (this.filter === "active") {
+  //     return this.todos.filter((todo) => !todo.complete);
+  //   } else if (this.filter === "completed") {
+  //     return this.todos.filter((todo) => todo.complete);
+  //   } else {
+  //     return this.todos;
+  //   }
+  // }
+
   getFilteredTodos(): any[] {
+    const sortedTodos = this.todos.slice().sort((a, b) => {
+      if (a.pin && !b.pin) {
+        return -1;
+      } else if (!a.pin && b.pin) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
     if (this.filter === "active") {
-      return this.todos.filter((todo) => !todo.complete);
+      return sortedTodos.filter((todo) => !todo.complete);
     } else if (this.filter === "completed") {
-      return this.todos.filter((todo) => todo.complete);
+      return sortedTodos.filter((todo) => todo.complete);
     } else {
-      return this.todos;
+      return sortedTodos;
     }
   }
 

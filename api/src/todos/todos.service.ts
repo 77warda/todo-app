@@ -10,22 +10,26 @@ export class TodosService {
       id: 1,
       name: "first",
       complete: false,
+      pin: false,
     },
     {
       id: 2,
       name: "Second",
       complete: false,
+      pin: false,
     },
     {
       id: 3,
       name: "third",
       complete: false,
+      pin: false,
     },
   ];
   create(createTodoDto: CreateTodoDto) {
     const newTodo: Todo = {
       id: this.todos.length + 1,
       complete: false,
+      pin: false,
       ...createTodoDto,
     };
 

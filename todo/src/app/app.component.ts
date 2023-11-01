@@ -80,10 +80,16 @@ export class AppComponent implements OnInit {
     });
   }
   markCompleted(todo: Todo) {
-    console.log("mark complete", todo);
     if (todo.id !== undefined) {
       this.todoService.markAsComplete(todo.id, !todo.complete).subscribe(() => {
         todo.complete = !todo.complete;
+      });
+    }
+  }
+  pinnedTodo(todo: Todo) {
+    if (todo.id !== undefined) {
+      this.todoService.pinTodo(todo.id, !todo.pin).subscribe(() => {
+        todo.pin = !todo.pin;
       });
     }
   }

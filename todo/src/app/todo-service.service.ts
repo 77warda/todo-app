@@ -28,6 +28,12 @@ export class TodoServiceService {
       complete: status,
     });
   }
+
+  pinTodo(todoId: number, status: boolean): Observable<Todo> {
+    return this.http.patch<Todo>(`${this.apiUrl}/${todoId}`, {
+      pin: status,
+    });
+  }
   updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
     return this.http.patch<Todo>(`${this.apiUrl}/${id}`, updatedTodo);
   }
