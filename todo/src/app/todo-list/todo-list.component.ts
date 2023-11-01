@@ -69,16 +69,6 @@ export class TodoListComponent {
     this.clearcompletedItems.emit();
   }
 
-  // getFilteredTodos(): any[] {
-  //   if (this.filter === "active") {
-  //     return this.todos.filter((todo) => !todo.complete);
-  //   } else if (this.filter === "completed") {
-  //     return this.todos.filter((todo) => todo.complete);
-  //   } else {
-  //     return this.todos;
-  //   }
-  // }
-
   getFilteredTodos(): any[] {
     const sortedTodos = this.todos.slice().sort((a, b) => {
       if (a.pin && !b.pin) {
