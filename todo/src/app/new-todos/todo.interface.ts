@@ -3,5 +3,4 @@ export interface Todo {
   name: string;
   complete: boolean;
   pin: boolean;
-  isLoading?: boolean;
 }

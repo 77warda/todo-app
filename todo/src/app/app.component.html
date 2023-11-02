@@ -17,7 +17,12 @@
         (pinTodo)="pinnedTodo($event)"
         (clearcompletedItems)="clearCompleted()"
         [selectedTodo]="selectedTodo"
+        [showLoader]="showLoader"
       ></org-todo-list>
     </div>
   </div>
 </div>
+<ng-container *ngIf="erroMessage">
+  <org-snackbar [errMsg]="erroMessage"></org-snackbar>
+</ng-container>
+<!-- <org-loader></org-loader> -->

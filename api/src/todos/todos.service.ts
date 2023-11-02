@@ -51,10 +51,9 @@ export class TodosService {
       console.log(`Todo with ID ${id} not found`);
     }
 
-    // Replace the entire todo object with the updated data
     this.todos[index] = {
       ...this.todos[index],
-      ...updateTodoDto, // Update with the new data from updateTodoDto
+      ...updateTodoDto,
     };
 
     return this.todos[index];
@@ -64,7 +63,6 @@ export class TodosService {
     const index = this.todos.findIndex((todo) => todo.id === id);
     if (index !== -1) {
       this.todos.splice(index, 1);
-      // Reset IDs for remaining todos starting from 1
       this.todos.forEach((todo, index) => {
         todo.id = index + 1;
       });

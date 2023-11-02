@@ -1,12 +1,31 @@
 .list {
     width: 100%;
-    max-height: 330px;
     margin-top: 2rem;
+    min-height: 30px;
+    max-height: 170px;
+    overflow-y: auto;
 
     .todo-con {
-        width: 100%;
+        width: 95%;
         background-color: hsl(235, 24%, 19%);
         border-radius: 5px;
+
+        .no-todos-message {
+            width: 100%;
+            height: 200px;
+
+            p {
+                font-size: 18px;
+                background-color: hsl(235, 24%, 19%);
+                color: #fff;
+                padding: 0.7rem;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
 
         .todo-li {
             display: flex;
@@ -56,15 +75,14 @@
             .pin {
                 width: 15px;
                 height: 15px;
-                border: 1px solid hsl(233, 14%, 35%);
-                border-radius: 5px;
                 display: grid;
                 place-content: center;
                 margin-left: 1rem;
+                color: #fff;
                 cursor: pointer;
 
                 &.active-pin {
-                    background: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+                    color: hsl(192, 78%, 45%);
                 }
             }
 
@@ -113,7 +131,7 @@
 }
 
 .info {
-    width: 100%;
+    width: 95%;
     display: flex;
     justify-content: space-between;
     color: hsl(234, 11%, 52%);

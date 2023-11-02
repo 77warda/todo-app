@@ -1,10 +1,12 @@
-import type { StorybookConfig } from '@storybook/angular';
+import type { StorybookConfig } from "@storybook/angular";
 
 const config: StorybookConfig = {
-  stories: ['../src/app/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
+  stories: ["../src/app/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
+  addons: ["@storybook/addon-essentials", "@storybook/addon-interactions"],
+  staticDirs: [{ from: "../src/assets", to: "/assets" }],
+
   framework: {
-    name: '@storybook/angular',
+    name: "@storybook/angular",
     options: {},
   },
 };

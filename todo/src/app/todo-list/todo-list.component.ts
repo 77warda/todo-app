@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { TodoServiceService } from "../todo-service.service";
 import { Todo } from "../new-todos/todo.interface";
@@ -9,7 +16,7 @@ import { DataShareService } from "../data-share.service";
   templateUrl: "./todo-list.component.html",
   styleUrls: ["./todo-list.component.scss"],
 })
-export class TodoListComponent {
+export class TodoListComponent implements OnInit, OnChanges {
   @Input() todos: Todo[] = [];
   @Input() selectedTodo: Todo | null = null;
   @Output() deleteTodoItem = new EventEmitter<number>();
@@ -18,7 +25,8 @@ export class TodoListComponent {
   @Output() pinTodo = new EventEmitter<Todo>();
   @Output() clearcompletedItems = new EventEmitter<any>();
 
-  isLoading = false;
+  @Input() showLoader: boolean = true;
+  noTodosMessage = "No Todos Available";
   filter: "all" | "active" | "completed" = "all";
   isModalVisible: boolean = false;
   todoToDelete: Todo | null = null;
@@ -27,10 +35,14 @@ export class TodoListComponent {
     private todoDataService: DataShareService,
     private todoService: TodoServiceService
   ) {}
+
   ngOnInit(): void {
-    // this.todoService.getTodos().subscribe((todos: Todo[]) => {
-    //   this.todos = todos;
-    // });
+    this.showLoader = true;
+  }
+  ngOnChanges() {
+    if ((this.todos && this.todos.length > 0) || this.todos.length === 0) {
+      this.showLoader = false;
+    }
   }
   showModal(todo: Todo) {
     this.todoToDelete = todo;

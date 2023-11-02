@@ -10,15 +10,23 @@ import { DataShareService } from "./data-share.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  allTodos!: Todo[];
-  isLoading = false;
+  allTodos: Todo[] = [];
+  showLoader: boolean = true;
   selectedTodo: Todo | null = null;
+  erroMessage = "";
 
   ngOnInit(): void {
-    this.todoService.getTodos().subscribe((todos) => {
-      console.log("Server Response - Todos: ", todos);
-      this.allTodos = todos;
-    });
+    this.todoService.getTodos().subscribe(
+      (todos) => {
+        console.log("Server Response - Todos: ", todos);
+        this.allTodos = todos;
+      },
+      (error) => {
+        this.erroMessage = `Network error ${error.message}`;
+        // alert(`Network error ${error.message}`);
+        console.error("Error fetching Todos: ", error);
+      }
+    );
   }
   constructor(
     private todoEdit: DataShareService,
@@ -74,9 +82,10 @@ export class AppComponent implements OnInit {
       this.fetchTodos();
     });
   }
-  fetchTodos(): void {
-    this.todoService.getTodos().subscribe((todos) => {
-      this.allTodos = todos;
+
+  fetchTodos() {
+    this.todoService.getTodos().subscribe((response) => {
+      this.allTodos = response;
     });
   }
   markCompleted(todo: Todo) {

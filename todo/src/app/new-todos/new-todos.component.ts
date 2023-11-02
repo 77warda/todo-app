@@ -40,14 +40,6 @@ export class NewTodosComponent implements OnInit {
     });
   }
 
-  // addTodo() {
-  //   if (this.todoForm.valid) {
-  //     const newTodo = this.todoForm.value;
-  //     this.todoForm.reset();
-  //     this.addTodoItem.emit(newTodo);
-  //   }
-  // }
-
   onSubmit() {
     if (this.todoForm.valid) {
       const newTodo = this.todoForm.value;
