@@ -2,24 +2,25 @@ import { Injectable } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { UpdateTodoDto } from "./dto/update-todo.dto";
 import { Todo } from "./entities/todo.entity";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class TodosService {
   private todos: Todo[] = [
     {
-      id: 1,
+      id: uuidv4(),
       name: "first",
       complete: false,
       pin: false,
     },
     {
-      id: 2,
+      id: uuidv4(),
       name: "Second",
       complete: false,
       pin: false,
     },
     {
-      id: 3,
+      id: uuidv4(),
       name: "third",
       complete: false,
       pin: false,
@@ -27,7 +28,7 @@ export class TodosService {
   ];
   create(createTodoDto: CreateTodoDto) {
     const newTodo: Todo = {
-      id: this.todos.length + 1,
+      id: uuidv4(),
       complete: false,
       pin: false,
       ...createTodoDto,
@@ -41,11 +42,11 @@ export class TodosService {
     return this.todos;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.todos.find((todo) => todo.id === id);
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
+  update(id: string, updateTodoDto: UpdateTodoDto) {
     const index = this.todos.findIndex((todo) => todo.id === id);
     if (index === -1) {
       console.log(`Todo with ID ${id} not found`);
@@ -59,13 +60,14 @@ export class TodosService {
     return this.todos[index];
   }
 
-  remove(id: number) {
-    const index = this.todos.findIndex((todo) => todo.id === id);
-    if (index !== -1) {
-      this.todos.splice(index, 1);
-      this.todos.forEach((todo, index) => {
-        todo.id = index + 1;
-      });
-    }
+  remove(id: string) {
+    // const index = this.todos.findIndex((todo) => todo.id === id);
+    // if (index !== -1) {
+    //   this.todos.splice(index, 1);
+    //   this.todos.forEach((todo, index) => {
+    //     todo.id = index + 1;
+    //   });
+    // }
+    this.todos = this.todos.filter((x) => x.id !== id);
   }
 }

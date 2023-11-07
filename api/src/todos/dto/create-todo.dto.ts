@@ -1,5 +1,5 @@
 export class CreateTodoDto {
-  id: number;
+  id: string;
   name: string;
   complete: boolean;
   pin: boolean;

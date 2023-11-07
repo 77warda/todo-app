@@ -19,22 +19,22 @@ export class TodoServiceService {
     return this.http.post<Todo>(this.apiUrl, todo);
   }
 
-  deleteTodo(todoId: number): Observable<Todo> {
+  deleteTodo(todoId: string): Observable<Todo> {
     return this.http.delete<Todo>(`${this.apiUrl}/${todoId}`);
   }
 
-  markAsComplete(todoId: number, status: boolean): Observable<Todo> {
+  markAsComplete(todoId: string, status: boolean): Observable<Todo> {
     return this.http.patch<Todo>(`${this.apiUrl}/${todoId}`, {
       complete: status,
     });
   }
 
-  pinTodo(todoId: number, status: boolean): Observable<Todo> {
+  pinTodo(todoId: string, status: boolean): Observable<Todo> {
     return this.http.patch<Todo>(`${this.apiUrl}/${todoId}`, {
       pin: status,
     });
   }
-  updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
+  updateTodo(id: string, updatedTodo: Todo): Observable<Todo> {
     return this.http.patch<Todo>(`${this.apiUrl}/${id}`, updatedTodo);
   }
 }

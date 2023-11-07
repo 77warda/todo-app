@@ -3,6 +3,16 @@ import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { TodoServiceService } from "../app/todo-service.service";
 import { Todo } from "./new-todos/todo.interface";
 import { DataShareService } from "./data-share.service";
+import {
+  Observable,
+  async,
+  catchError,
+  filter,
+  map,
+  switchMap,
+  tap,
+  toArray,
+} from "rxjs";
 
 @Component({
   selector: "org-root",
@@ -11,22 +21,23 @@ import { DataShareService } from "./data-share.service";
 })
 export class AppComponent implements OnInit {
   allTodos: Todo[] = [];
-  showLoader: boolean = true;
   selectedTodo: Todo | null = null;
   erroMessage = "";
+  products$: Observable<Todo[]>;
 
   ngOnInit(): void {
-    this.todoService.getTodos().subscribe(
-      (todos) => {
-        console.log("Server Response - Todos: ", todos);
-        this.allTodos = todos;
-      },
-      (error) => {
-        this.erroMessage = `Network error ${error.message}`;
-        // alert(`Network error ${error.message}`);
-        console.error("Error fetching Todos: ", error);
-      }
-    );
+    // this.todoService.getTodos().subscribe(
+    //   (todos) => {
+    //     console.log("Server Response - Todos: ", todos);
+    //     this.allTodos = todos;
+    //   },
+    //   (error) => {
+    //     this.erroMessage = `Network error ${error.message}`;
+    //     // alert(`Network error ${error.message}`);
+    //     console.error("Error fetching Todos: ", error);
+    //   }
+    // );
+    this.fetchTodos();
   }
   constructor(
     private todoEdit: DataShareService,
@@ -75,18 +86,20 @@ export class AppComponent implements OnInit {
     }
   }
 
-  deleteTodo(todoId: number) {
-    console.log("delete", todoId);
-    this.todoService.deleteTodo(todoId).subscribe(() => {
-      this.allTodos = this.allTodos.filter((todo) => todo.id !== todoId);
-      this.fetchTodos();
-    });
-  }
-
   fetchTodos() {
-    this.todoService.getTodos().subscribe((response) => {
-      this.allTodos = response;
-    });
+    // this.todoService.getTodos().subscribe((response) => {
+    //   this.allTodos = response;
+    // });
+    // this.products$ = this.todoService.getTodos();
+    this.products$ = this.todoService.getTodos().pipe(
+      tap((response) => {
+        this.allTodos = response;
+      }),
+      catchError((error) => {
+        this.erroMessage = `Network error ${error.message}`;
+        return [];
+      })
+    );
   }
   markCompleted(todo: Todo) {
     if (todo.id !== undefined) {
@@ -103,17 +116,25 @@ export class AppComponent implements OnInit {
     }
   }
 
+  deleteTodo(todoId: string) {
+    console.log("delete", todoId);
+    this.todoService.deleteTodo(todoId).subscribe(() => {
+      this.allTodos = this.allTodos.filter((todo) => todo.id !== todoId);
+      this.fetchTodos();
+    });
+  }
+
   clearCompleted() {
     const completedTodoIds = this.allTodos
-      .filter((todo) => todo.complete && todo.id !== undefined)
-      .map((todo) => todo.id as number);
+      .filter((todo) => todo.complete)
+      .map((todo) => todo.id);
+    console.log("completed ids", completedTodoIds);
+
     completedTodoIds.forEach((todoId) => {
       this.todoService.deleteTodo(todoId).subscribe(() => {
-        this.allTodos = this.allTodos.filter((todo) => {
-          return todo.id !== todoId;
-        });
-        this.fetchTodos();
+        this.allTodos = this.allTodos.filter((todo) => todo.id !== todoId);
       });
     });
+    this.fetchTodos();
   }
 }

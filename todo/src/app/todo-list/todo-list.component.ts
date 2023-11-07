@@ -10,6 +10,7 @@ import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { TodoServiceService } from "../todo-service.service";
 import { Todo } from "../new-todos/todo.interface";
 import { DataShareService } from "../data-share.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "org-todo-list",
@@ -19,13 +20,13 @@ import { DataShareService } from "../data-share.service";
 export class TodoListComponent implements OnInit, OnChanges {
   @Input() todos: Todo[] = [];
   @Input() selectedTodo: Todo | null = null;
-  @Output() deleteTodoItem = new EventEmitter<number>();
-  @Output() editTodoItem = new EventEmitter<number>();
+  @Output() deleteTodoItem = new EventEmitter<string>();
+  @Output() editTodoItem = new EventEmitter<string>();
   @Output() markAsComplete = new EventEmitter<Todo>();
   @Output() pinTodo = new EventEmitter<Todo>();
   @Output() clearcompletedItems = new EventEmitter<any>();
 
-  @Input() showLoader: boolean = true;
+  showLoader: boolean = true;
   noTodosMessage = "No Todos Available";
   filter: "all" | "active" | "completed" = "all";
   isModalVisible: boolean = false;
@@ -37,10 +38,10 @@ export class TodoListComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.showLoader = true;
+    // this.showLoader = true;
   }
   ngOnChanges() {
-    if ((this.todos && this.todos.length > 0) || this.todos.length === 0) {
+    if (Array.isArray(this.todos)) {
       this.showLoader = false;
     }
   }
@@ -64,7 +65,7 @@ export class TodoListComponent implements OnInit, OnChanges {
     this.todoDataService.setTodo(todo);
   }
 
-  deleteTodo(todoId: number | undefined) {
+  deleteTodo(todoId: string | undefined) {
     console.log("child", todoId);
     this.deleteTodoItem.emit(todoId);
   }
@@ -81,24 +82,17 @@ export class TodoListComponent implements OnInit, OnChanges {
     this.clearcompletedItems.emit();
   }
 
-  getFilteredTodos(): any[] {
-    const sortedTodos = this.todos.slice().sort((a, b) => {
-      if (a.pin && !b.pin) {
-        return -1;
-      } else if (!a.pin && b.pin) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-
-    if (this.filter === "active") {
-      return sortedTodos.filter((todo) => !todo.complete);
-    } else if (this.filter === "completed") {
-      return sortedTodos.filter((todo) => todo.complete);
-    } else {
-      return sortedTodos;
-    }
+  getFilteredTodos() {
+    return (this.todos || [])
+      .slice()
+      .sort((a, b) => (a.pin && !b.pin ? -1 : !a.pin && b.pin ? 1 : 0))
+      .filter((todo) => {
+        return (
+          (this.filter === "active" && !todo.complete) ||
+          (this.filter === "completed" && todo.complete) ||
+          (this.filter !== "active" && this.filter !== "completed")
+        );
+      });
   }
 
   setFilter(filter: "all" | "active" | "completed"): void {

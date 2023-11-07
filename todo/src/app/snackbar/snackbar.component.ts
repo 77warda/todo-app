@@ -7,6 +7,9 @@ import { Component, Input, OnInit } from "@angular/core";
 })
 export class SnackbarComponent {
   @Input() errMsg!: string;
+  buttonColor: "blue" | "red" | "green" = "blue";
+  buttonText: "Reload" | "Ok" = "Ok";
+  buttonSize: "small" | "medium" | "large" = "medium";
   showSnackbar: boolean = true;
   close() {
     this.showSnackbar = false;

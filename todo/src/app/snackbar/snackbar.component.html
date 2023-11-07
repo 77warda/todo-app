@@ -1,4 +1,16 @@
 <div class="snackbar-error" *ngIf="showSnackbar">
   <p>{{ errMsg }}</p>
-  <button (click)="close()">Ok</button>
+  <button
+    [ngClass]="{
+      'blue-button': buttonColor === 'blue',
+      'green-button': buttonColor === 'green',
+      'small-button': buttonSize === 'small',
+      'medium-button': buttonSize === 'medium',
+      'large-button': buttonSize === 'large',
+      'red-button': buttonColor === 'red'
+    }"
+    (click)="close()"
+  >
+    {{ buttonText }}
+  </button>
 </div>

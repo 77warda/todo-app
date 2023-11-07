@@ -1,12 +1,12 @@
-<div class="list">
-  <div class="todo-con">
-    <div *ngIf="getFilteredTodos().length === 0" class="no-todos-message">
-      <p>No todos available.</p>
-    </div>
-    <org-loader class="mb-5" *ngIf="showLoader"></org-loader>
-    <div *ngIf="getFilteredTodos().length > 0">
+<ng-template #loader>
+  <org-loader class="mb-5"></org-loader>
+</ng-template>
+<ng-container *ngIf="!showLoader; else loader">
+  <div class="list" *ngIf="getFilteredTodos()?.length > 0; else noTodos">
+    <!-- <div class="list"> -->
+    <div class="todo-con">
       <div *ngFor="let todo of getFilteredTodos()" class="todo-li">
-        <ng-container *ngIf="!todo.isLoading">
+        <ng-container>
           <span
             (click)="markCompleted(todo)"
             [class.active-check]="todo.complete"
@@ -30,9 +30,9 @@
       </div>
     </div>
   </div>
-</div>
+</ng-container>
 <div class="info">
-  <p class="left">{{ todos.length }} items left</p>
+  <p class="left">{{ todos?.length }} items left</p>
   <div class="choice">
     <p [class.active]="filter === 'all'" (click)="setFilter('all')">All</p>
     <p [class.active]="filter === 'active'" (click)="setFilter('active')">
@@ -53,3 +53,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #noTodos>
+  <div class="no-todos-message">
+    <p>No todos available.</p>
+  </div>
+</ng-template>

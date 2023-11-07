@@ -11,13 +11,13 @@
         (todoUpdated)="handleTodoUpdated($event)"
       ></org-new-todos>
       <org-todo-list
+        [todos]="products$ | async"
         [todos]="allTodos"
         (deleteTodoItem)="deleteTodo($event)"
         (markAsComplete)="markCompleted($event)"
         (pinTodo)="pinnedTodo($event)"
         (clearcompletedItems)="clearCompleted()"
         [selectedTodo]="selectedTodo"
-        [showLoader]="showLoader"
       ></org-todo-list>
     </div>
   </div>
