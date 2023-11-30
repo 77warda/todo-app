@@ -1,0 +1,26 @@
+.container {
+    height: 60vh;
+}
+
+button {
+    all: unset;
+    background-color: blueviolet;
+    color: #fff;
+    padding: 1rem;
+    margin-left: 10px;
+}
+
+:host {
+    display: block;
+    margin-top: 1rem;
+}
+
+.open-close-container {
+    border: 1px solid #dddddd;
+    margin-top: 1em;
+    padding: 20px 20px 0px 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+// ===================Transition and Triggering====================

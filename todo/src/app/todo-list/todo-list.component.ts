@@ -6,16 +6,73 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { TodoServiceService } from "../todo-service.service";
 import { Todo } from "../new-todos/todo.interface";
 import { DataShareService } from "../data-share.service";
-import { Observable } from "rxjs";
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  query,
+  stagger,
+  // ...
+} from "@angular/animations";
 
 @Component({
   selector: "org-todo-list",
   templateUrl: "./todo-list.component.html",
   styleUrls: ["./todo-list.component.scss"],
+  animations: [
+    // trigger("listAnimation", [
+    //   transition("* => *", [
+    //     // each time the binding value changes
+    //     query(":leave", [stagger(100, [animate("2s", style({ opacity: 0 }))])]),
+    //     query(":enter", [
+    //       style({ opacity: 0 }),
+    //       stagger(100, [animate("0.5s", style({ opacity: 1 }))]),
+    //     ]),
+    //   ]),
+    // ]),
+    trigger("todoAnimation", [
+      transition(":enter", [
+        style({ opacity: 0, transform: "translateY(-25px)" }),
+        animate(
+          "0.6s ease-in-out",
+          style({ opacity: 1, transform: "translateY(0)" })
+        ),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1 }),
+        animate("0.5s ease-out", style({ opacity: 0 })),
+      ]),
+    ]),
+
+    trigger("filterAnimation", [
+      transition("* => completed", [
+        style({ opacity: 0, transform: "translateX(-40px)" }),
+        animate(
+          "0.4s ease-in-out",
+          style({ opacity: 1, transform: "translateX(0)" })
+        ),
+      ]),
+      transition("all <=> active", [
+        style({ opacity: 0, transform: "translateX(-40px)" }),
+        animate(
+          "0.4s ease-in-out",
+          style({ opacity: 1, transform: "translateX(0)" })
+        ),
+      ]),
+      transition("all <=> completed", [
+        style({ opacity: 0, transform: "translateX(-40px)" }),
+        animate(
+          "0.4s ease-in-out",
+          style({ opacity: 1, transform: "translateX(0)" })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class TodoListComponent implements OnInit, OnChanges {
   @Input() todos: Todo[] = [];
@@ -37,6 +94,9 @@ export class TodoListComponent implements OnInit, OnChanges {
     private todoService: TodoServiceService
   ) {}
 
+  toggle() {
+    this.filter == "active";
+  }
   ngOnInit(): void {
     // this.showLoader = true;
   }

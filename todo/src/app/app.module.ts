@@ -8,6 +8,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { LoaderComponent } from "./loader/loader.component";
 import { TodoListComponent } from "./todo-list/todo-list.component";
 import { SnackbarComponent } from "./snackbar/snackbar.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { IntroductionComponent } from "./introduction/introduction.component";
 
 @NgModule({
   declarations: [
@@ -17,8 +19,15 @@ import { SnackbarComponent } from "./snackbar/snackbar.component";
     LoaderComponent,
     TodoListComponent,
     SnackbarComponent,
+    IntroductionComponent,
   ],
-  imports: [BrowserModule, ReactiveFormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
